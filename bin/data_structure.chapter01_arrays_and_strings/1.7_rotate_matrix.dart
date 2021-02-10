@@ -4,13 +4,32 @@ void main() {
   print('Enter the N for NxN matrix:');
   var n = int.parse(stdin.readLineSync());
   var matrix = writeSnailMatrix(n);
+  print('Initial Matrix: ');
+  printMatrix(matrix, n);
+  rotateMatrix(matrix, n);
+  print('Matrix After Rotation: ');
   printMatrix(matrix, n);
 }
 
-void rotateMatrix(List<List<int>> matrix) {}
+void rotateMatrix(List<List<int>> matrix, int n) {
+  var i = 0;
+  while (i < n / 2) {
+    var lowerLimit = i;
+    var upperLimit = n - 1 - i;
+    for (var j = lowerLimit, k = upperLimit; j < n - 1 - lowerLimit; j++, k--) {
+      var temp = matrix[lowerLimit][j];
+      matrix[lowerLimit][j] = matrix[k][lowerLimit];
+      matrix[k][lowerLimit] = matrix[upperLimit][k];
+      matrix[upperLimit][k] = matrix[j][upperLimit];
+      matrix[j][upperLimit] = temp;
+    }
+    i++;
+  }
+}
 
 List<List<int>> writeSnailMatrix(int n) {
-  var matrix = List.generate(n, (index) => List<int>(n));
+  var matrix =
+      List.generate(n, (index) => /*List<int>(n)*/ <int>[]..length = n);
   var numberOfElements = n * n;
   var number = 1;
 
@@ -40,11 +59,10 @@ List<List<int>> writeSnailMatrix(int n) {
 
 void printMatrix(List<List<int>> matrix, int n) {
   for (var i = 0; i < n; i++) {
-    String currentRow ='';
+    var currentRow = '';
     for (var j = 0; j < n; j++) {
-      currentRow+='${matrix[i][j]}\t';
+      currentRow += '${matrix[i][j]}\t';
     }
     print(currentRow);
-    //print('\n');
   }
 }
